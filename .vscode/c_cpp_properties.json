@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Win32",
+      "compilerPath": "g++.exe",
+      "cppStandard": "c++17",
+      "cStandard": "c11",
+      "intelliSenseMode": "windows-gcc-x64"
+    }
+  ],
+  "version": 4
+}
