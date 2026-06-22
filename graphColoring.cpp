@@ -1,88 +1,80 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define V 4
 
-void printSolution(int color[]);
+vector<vector<int>> graph;
+vector<int> color;
+int n, m;
 
-
-bool isSafe(int v, bool graph[V][V], int color[], int c)
+bool isSafe(int v, int c)
 {
-    for (int i = 0; i < V; i++)
-        if (graph[v][i] && c == color[i])
+    for(int u = 0; u < n; u++)
+    {
+        if(graph[v][u] == 1 && color[u] == c)
             return false;
-
+    }
     return true;
 }
 
-bool graphColoringUtil(bool graph[V][V], int m, int color[],
-                       int v)
+bool graphColoring(int v)
 {
-
-    if (v == V)
+    
+    if(v == n)
         return true;
 
-    
-    for (int c = 1; c <= m; c++) {
-
-        
-        if (isSafe(v, graph, color, c)) {
+    for(int c = 1; c <= m; c++)
+    {
+        if(isSafe(v, c))
+        {
             color[v] = c;
 
-            
-            if (graphColoringUtil(graph, m, color, v + 1)
-                == true)
+            if(graphColoring(v + 1))
                 return true;
 
-            
             color[v] = 0;
         }
     }
 
-    
     return false;
 }
 
-
-bool graphColoring(bool graph[V][V], int m)
-{
-
-    int color[V];
-    for (int i = 0; i < V; i++)
-        color[i] = 0;
-
-    if (graphColoringUtil(graph, m, color, 0) == false) {
-        cout << "Solution does not exist";
-        return false;
-    }
-
-    printSolution(color);
-    return true;
-}
-
-void printSolution(int color[])
-{
-    cout << "Solution Exists:"
-         << " Following are the assigned colors"
-         << "\n";
-    for (int i = 0; i < V; i++)
-        cout << " " << color[i] << " ";
-
-    cout << "\n";
-}
-
-
 int main()
 {
+    cout << "Enter number of vertices: ";
+    cin >> n;
 
-    bool graph[V][V] = {
-        { 0, 1, 1, 1 },
-        { 1, 0, 1, 0 },
-        { 1, 1, 0, 1 },
-        { 1, 0, 1, 0 },
-    };
+    graph.assign(n, vector<int>(n));
 
-    int m = 3;
+    cout << "Enter adjacency matrix:\n";
 
-    graphColoring(graph, m);
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            cin >> graph[i][j];
+        }
+    }
+
+    cout << "Enter number of colors (m): ";
+    cin >> m;
+
+    color.assign(n, 0);
+
+    if(graphColoring(0))
+    {
+        cout << "\nColor Assignment:\n";
+
+        for(int i = 0; i < n; i++)
+        {
+            cout << "Vertex " << i
+                 << " -> Color " << color[i]
+                 << endl;
+        }
+    }
+    else
+    {
+        cout << "No solution exists with "
+             << m << " colors.\n";
+    }
+
     return 0;
 }
